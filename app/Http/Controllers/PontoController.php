@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePontoRequest;
 use App\Models\Ponto;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PontoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $ponto;
+
+    public function __construct(Ponto $ponto)
+    {
+        $this->ponto = $ponto;
+    }
     public function index()
     {
-        return view('view.ponto.index');
+        $pontos = $this->ponto->paginate(10);
+        // dd($pontos);
+        return view('view.ponto.index', ['pontos' => $pontos]);
     }
 
     /**
@@ -33,9 +39,14 @@ class PontoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePontoRequest $request, Ponto $ponto)
     {
-        //
+        abort_if(Gate::denies('store', Ponto::class), 403, 'ACESSO NEGADO');
+        $ponto->setAll($request->validated());
+        $save = $ponto->save();
+        if ($save) {
+            return redirect()->route('ponto.show', ["id" => $ponto->id]);
+        }
     }
 
     /**
@@ -44,9 +55,14 @@ class PontoController extends Controller
      * @param  \App\Models\Ponto  $ponto
      * @return \Illuminate\Http\Response
      */
-    public function show(Ponto $ponto)
+    public function show($id)
     {
-        //
+        $exists = $this->ponto->where('id', $id)->first();
+        if ($exists) {
+            return view('view.ponto.show', ['ponto' => $exists]);
+        } else {
+            return redirect()->back();
+        }
     }
 
     /**

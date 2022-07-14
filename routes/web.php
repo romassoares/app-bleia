@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create', [PontoController::class, 'create'])->name('create');
         Route::post('/store', [PontoController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [PontoController::class, 'edit'])->name('edit');
+        Route::get('/show/{id}', [PontoController::class, 'show'])->name('show');
         Route::put('/update/{id}', [PontoController::class, 'update'])->name('update');
         Route::delete('/destroy/{id}', [PontoController::class, 'destroy'])->name('destroy');
     });
