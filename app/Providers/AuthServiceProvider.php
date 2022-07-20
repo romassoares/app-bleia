@@ -31,5 +31,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('store-ponto', function (User $user) {
             return $user->id;
         });
+        Gate::define('update-ponto', function (User $user) {
+            return $user->id;
+        });
     }
 }

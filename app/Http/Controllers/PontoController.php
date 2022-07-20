@@ -23,22 +23,11 @@ class PontoController extends Controller
         return view('view.ponto.index', ['pontos' => $pontos]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('view.ponto.form');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StorePontoRequest $request, Ponto $ponto)
     {
         abort_if(Gate::denies('store', Ponto::class), 403, 'ACESSO NEGADO');
@@ -49,12 +38,6 @@ class PontoController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Ponto  $ponto
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $exists = $this->ponto->where('id', $id)->first();
@@ -65,35 +48,34 @@ class PontoController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Ponto  $ponto
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ponto $ponto)
+    public function edit($id)
     {
-        //
+        $exists = $this->ponto->where('id', $id)->first();
+        if ($exists) {
+            return view('view.ponto.form', ['ponto' => $exists]);
+        } else {
+            return redirect()->back();
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ponto  $ponto
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Ponto $ponto)
+    public function update(StorePontoRequest $request, $id, Ponto $ponto)
     {
-        //
+        abort_if(Gate::denies('update', Ponto::class), 403, 'ACESSO NEGADO');
+        $exists = $this->ponto->where('id', $id)->first();
+        if (!$exists) {
+            return redirect()->back();
+            // não existe
+        }
+        $exists->setAll($request->validated());
+        $save = $exists->update();
+        if ($save) {
+            return redirect()->route('ponto.show', ["id" => $exists->id]);
+        } else {
+            return redirect()->back();
+            // não salvou
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Ponto  $ponto
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Ponto $ponto)
     {
         //

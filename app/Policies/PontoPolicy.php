@@ -18,4 +18,8 @@ class PontoPolicy
     {
         return $user->id;
     }
+    public function update(User $user)
+    {
+        return $user->id;
+    }
 }
