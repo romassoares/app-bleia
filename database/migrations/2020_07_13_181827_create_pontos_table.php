@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('pontos', function (Blueprint $table) {
             $table->id();
+            $table->string('descricao');
             $table->string('cidade');
             $table->string('bairro');
             $table->string('rua');

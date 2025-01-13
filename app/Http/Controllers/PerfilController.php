@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Perfil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PerfilController extends Controller
 {
@@ -14,7 +15,8 @@ class PerfilController extends Controller
      */
     public function index(Perfil $perfil)
     {
-        return view('view.perfil.index');
+        $perfils = Perfil::first();
+        return view('view.perfil.index', compact('perfils'));
     }
 
     /**
@@ -35,51 +37,24 @@ class PerfilController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $id_perfil = $request->id_perfil;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Perfil  $perfil
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Perfil $perfil)
-    {
-        //
-    }
+        $validated = $request->validate([
+            'cnpj' => 'required|unique:perfils|max:18|min:14',
+            'razao_social' => 'required|max:250|min:3',
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Perfil  $perfil
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Perfil $perfil)
-    {
-        //
-    }
+        $validated['users_id'] = Auth::id();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Perfil  $perfil
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Perfil $perfil)
-    {
-        //
-    }
+        if (empty($id_perfil)) {
+            Perfil::create($validated);
+        } else {
+            $perfil = Perfil::find($id_perfil);
+            if (isset($perfil)) {
+                $perfil->update($validated);
+            }
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Perfil  $perfil
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Perfil $perfil)
-    {
-        //
+        return redirect()->route('perfil.index')->with('success', 'Já existe um dízimo para este mês de referência.');;
     }
 }

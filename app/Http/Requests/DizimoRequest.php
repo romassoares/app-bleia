@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePontoRequest extends FormRequest
+class DizimoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,11 @@ class StorePontoRequest extends FormRequest
     public function rules()
     {
         return [
-            'descricao' => 'required|min:3|max:255',
-            'cidade' => 'required|min:3|max:255',
-            'bairro' => 'required|min:3|max:255',
-            'rua' => 'required|min:3|max:255',
-            'numero' => 'required|min:1|max:11',
-            'contato' => 'required|max:11',
-            'user_id' => 'required'
+            'valor' => 'required|min:3|max:999999',
+            'mes_referencia' => 'required|date',
+            'membros_id' => 'required',
+            'ponto_id' => 'required',
+            'users_id' => 'required',
         ];
     }
 }

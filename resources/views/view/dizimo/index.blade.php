@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Membro')
+@section('title', 'Dizimo')
 
 @section('content_header')
-<h1 class="m-0 text-dark">Membros</h1>
+<h1 class="m-0 text-dark">Dizimos</h1>
 @stop
 
 @section('content')
@@ -13,33 +13,34 @@
             <div class="card-body">
                 <table class="table">
                     <thead>
-                        <th>nome</th>
-                        <th>bairro</th>
-                        <th>rua</th>
-                        <th>numero</th>
+                        <th>#</th>
+                        <th>valor</th>
+                        <th>Membro</th>
+                        <th>mes_referencia</th>
                         <th>ações</th>
                     </thead>
                     <tbody>
-                        @foreach ($membros as $membro )
+                        <?php $i = 0; ?>
+                        @foreach ($dizimos as $dizimo )
                         <tr>
-                            <td>{{$membro->nome}}</td>
-                            <td>{{$membro->bairro}}</td>
-                            <td>{{$membro->rua}}</td>
-                            <td>{{$membro->numero}}</td>
+                            <td>{{$i++}}</td>
+                            <td>{{$dizimo->valor}}</td>
+                            <td>{{ $dizimo->Membro->nome ?? '' }}</td>
+                            <td>{{$dizimo->mes_referencia}}</td>
                             <td>
-                                <div class="d-flex justify-content-around">
+                                <div class="d-flex justify-content-center">
                                     <div class="col">
-                                        <a href="{{route('membros.show',['id'=>$membro->id])}}">
+                                        <a href="route('dizimos.show',['id'=>$dizimo->id])">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </div>
                                     <div class="col">
-                                        <a href="{{route('membros.edit',['id'=>$membro->id])}}">
+                                        <a href="route('dizimos.edit',['id'=>$dizimo->id])">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     </div>
                                     <div class="col">
-                                        <a href="{{route('membros.destroy',['id'=>$membro->id])}}">
+                                        <a href="route('dizimos.destroy',['id'=>$dizimo->id])">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
@@ -50,12 +51,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer d-flex justify-content-around">
-                <div class="col">
-                    <a class="btn btn-primary" href="{{route('membros.create')}}">Novo</a>
-                </div>
-                <div class="col">
-                    {{ $membros->links() }}
+            <div class="card-footer">
+                <div class="col-12 d-flex justify-content-around">
+                    <div class="col">
+                        <a href="{{route('dizimos.create')}}" class="btn btn-primary">Novo</a>
+                    </div>
+                    <div class="col">
+                        {{$dizimos->links()}}
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Home')
+@section('title', 'Ponto')
 
 @section('content_header')
-<h1 class="m-0 text-dark">Membros</h1>
+<h1 class="m-0 text-dark">Pontos</h1>
 @stop
 
 @section('content')
@@ -15,6 +15,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>descricao</th>
                             <th>cidade</th>
                             <th>bairro</th>
                             <th>numero</th>
@@ -25,6 +26,7 @@
                         @forelse($pontos as $ponto)
                         <tr>
                             <td>{{$ponto->id}}</td>
+                            <td>{{$ponto->descricao}}</td>
                             <td>{{$ponto->cidade}}</td>
                             <td>{{$ponto->bairro}}</td>
                             <td>{{$ponto->numero}}</td>

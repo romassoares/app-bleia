@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cargo;
+use App\Models\Ponto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CargoController extends Controller
 {
@@ -14,7 +16,8 @@ class CargoController extends Controller
      */
     public function index()
     {
-        //
+        $cargos = Cargo::paginate(15);
+        return view('view.cargo.index', compact('cargos'));
     }
 
     /**
@@ -24,7 +27,11 @@ class CargoController extends Controller
      */
     public function create()
     {
-        //
+        $pontos = Ponto::all();
+        if (count($pontos) == 0)
+            return redirect()->route('ponto.index');
+
+        return view('view.cargo.form', compact("pontos"));
     }
 
     /**
@@ -35,7 +42,15 @@ class CargoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nome' => 'required|unique:cargos|max:150|min:2'
+        ]);
+
+        $validated['users_id'] = Auth::id();
+
+        Cargo::create($validated);
+
+        return redirect()->route('cargos.index');
     }
 
     /**

@@ -18,22 +18,20 @@ return new class extends Migration
 
             $table->string('nome');
             $table->char('cpf');
-            $table->char('rg');
             $table->enum('estado_civil', ['cas', 'sol', 'div', 'viu']);
             $table->string('naturalidade');
             $table->char('cep');
             $table->string('cidade');
             $table->string('bairro');
-            $table->string('rua');
-            $table->integer('numero');
+            $table->enum('sexo', ['m', 'f']);
+            $table->string('rua')->nullable();
+            $table->integer('numero')->nullable();
 
-            $table->string('nome_mae');
-            $table->string('nome_pai');
+            $table->string('nome_mae')->nullable();
+            $table->string('nome_pai')->nullable();
 
-            $table->date('data_batismo');
+            $table->date('data_batismo')->nullable();
             $table->date('data_nascimento');
-            $table->date('data_consagracao');
-            $table->date('data_emissão');
 
             $table->unsignedBigInteger('cargo_id');
             $table->foreign('cargo_id')->references('id')->on('cargos');

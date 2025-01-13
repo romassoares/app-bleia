@@ -11,9 +11,6 @@ class Cargo extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'nome',
-        'tipo',
-        'remuneracao',
         'users_id',
-        'ponto_id',
     ];
 }

@@ -11,6 +11,7 @@ class Perfil extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'cnpj',
+        'razao_social',
         'users_id'
     ];
 }

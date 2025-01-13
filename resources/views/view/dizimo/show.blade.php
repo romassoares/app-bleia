@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Cargo')
+@section('title', 'Dizimo')
 
 @section('content_header')
-<h1 class="m-0 text-dark">Dashboard</h1>
+<h1 class="m-0 text-dark">Dizimo</h1>
 @stop
 
 @section('content')

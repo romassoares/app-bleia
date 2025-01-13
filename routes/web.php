@@ -7,6 +7,7 @@ use App\Http\Controllers\MembroController;
 use App\Http\Controllers\OfertasController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\PontoController;
+use App\Http\Controllers\RelatorioController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +51,16 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/destroy/{id}', [PontoController::class, 'destroy'])->name('destroy');
     });
 
+    Route::name('membros.')->prefix('membro')->group(function () {
+        Route::get('/index', [MembroController::class, 'index'])->name('index');
+        Route::get('/create', [MembroController::class, 'create'])->name('create');
+        Route::post('/store', [MembroController::class, 'store'])->name('store');
+        Route::get('/show/{id}', [MembroController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [MembroController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [MembroController::class, 'update'])->name('update');
+        Route::delete('/destroy/{id}', [MembroController::class, 'destroy'])->name('destroy');
+    });
+
     Route::name('ofertas.')->prefix('oferta')->group(function () {
         Route::get('/index', [OfertasController::class, 'index'])->name('index');
         Route::get('/create', [OfertasController::class, 'create'])->name('create');
@@ -76,20 +87,18 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update/{id}', [DespesasController::class, 'update'])->name('update');
         Route::delete('/destroy/{id}', [DespesasController::class, 'destroy'])->name('destroy');
     });
-    Route::name('membros.')->prefix('membro')->group(function () {
-        Route::get('/index', [MembroController::class, 'index'])->name('index');
-        Route::get('/create', [MembroController::class, 'create'])->name('create');
-        Route::post('/store', [MembroController::class, 'store'])->name('store');
-        Route::get('/edit/{id}', [MembroController::class, 'edit'])->name('edit');
-        Route::put('/update/{id}', [MembroController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}', [MembroController::class, 'destroy'])->name('destroy');
-    });
+
     Route::name('dizimos.')->prefix('dizimo')->group(function () {
         Route::get('/index', [DizimoController::class, 'index'])->name('index');
         Route::get('/create', [DizimoController::class, 'create'])->name('create');
         Route::post('/store', [DizimoController::class, 'store'])->name('store');
+        Route::get('/show/{id}', [DizimoController::class, 'show'])->name('show');
         Route::get('/edit/{id}', [DizimoController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [DizimoController::class, 'update'])->name('update');
         Route::delete('/destroy/{id}', [DizimoController::class, 'destroy'])->name('destroy');
+    });
+    Route::name('relatorio.')->prefix('relatorio')->group(function () {
+        Route::get('/index', [RelatorioController::class, 'index'])->name('index');
+        Route::post('/relatorio', [RelatorioController::class, 'relatorio'])->name('relatorio');
     });
 });

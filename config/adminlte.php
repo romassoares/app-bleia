@@ -246,6 +246,16 @@ return [
             'url'  => 'cargo/index',
             'icon' => 'fas fa-fw fa-user',
         ],
+        [
+            'text' => 'Dízimo',
+            'url'  => 'dizimo/index',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => 'Relatório',
+            'url'  => 'relatorio/index',
+            'icon' => 'fas fa-fw fa-user',
+        ],
     ],
 
     /*
