@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePontoRequest;
+use App\Models\Dizimo;
 use App\Models\Ponto;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class PontoController extends Controller
     }
     public function index()
     {
-        $pontos = $this->ponto->paginate(10);
+        $pontos = $this->ponto->withTrashed()->paginate(8);
         // dd($pontos);
         return view('view.ponto.index', ['pontos' => $pontos]);
     }
@@ -34,15 +35,20 @@ class PontoController extends Controller
         $ponto->setAll($request->validated());
         $save = $ponto->save();
         if ($save) {
-            return redirect()->route('ponto.show', ["id" => $ponto->id]);
+            return redirect()->route('ponto.index')->with('success', 'Item inserido com sucesso');
         }
     }
 
     public function show($id)
     {
-        $exists = $this->ponto->where('id', $id)->first();
+        $exists = $this->ponto->withTrashed()->where('id', $id)->first();
+        $dizimos = Dizimo::selectRaw('valor, DATE_FORMAT(mes_referencia, "%M") as mes')
+            ->where('ponto_id', $exists->id)
+            ->orderBy('mes_referencia', 'asc')
+            ->get();
+        // dd($dizimos);
         if ($exists) {
-            return view('view.ponto.show', ['ponto' => $exists]);
+            return view('view.ponto.show', ['ponto' => $exists, 'dizimos' => $dizimos]);
         } else {
             return redirect()->back();
         }
@@ -69,15 +75,30 @@ class PontoController extends Controller
         $exists->setAll($request->validated());
         $save = $exists->update();
         if ($save) {
-            return redirect()->route('ponto.show', ["id" => $exists->id]);
+            return redirect()->route('ponto.index')->with('success', 'Item inserido com sucesso');
         } else {
-            return redirect()->back();
-            // não salvou
+            return redirect()->back()->with('error', 'Erro ao tentar inserir item');
         }
     }
 
-    public function destroy(Ponto $ponto)
+    public function destroy($id)
     {
-        //
+        $exists = Ponto::where('id', $id)->first();
+        // dd($exists);
+        if (!$exists)
+            return redirect()->back()->with('warning', 'Item não encontrado');
+        if ($exists->delete()) {
+            return redirect()->back()->with('success', 'Item removido com sucesso');
+        }
+    }
+
+    public function restore($id)
+    {
+        $exists = Ponto::where('id', $id)->withTrashed()->first();
+        if (!$exists)
+            return redirect()->back()->with('warning', 'Item não encontrado');
+        if ($exists->restore()) {
+            return redirect()->back()->with('success', 'Item restaurado com sucesso');
+        }
     }
 }

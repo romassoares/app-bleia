@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Dizimo extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     protected $fillable = [
         'membros_id',
         'ponto_id',
@@ -26,12 +25,17 @@ class Dizimo extends Model
         $this->users_id = $data['users_id'];
     }
 
+    // public function getMes()
+    // {
+    //     return date('F', strtotime($this->mes_referencia));
+    // }
+
     // public function Membro()
     // {
     //     return $this->hasOne(Membro::class, 'id');
     // }
     public function Membro()
     {
-        return $this->belongsTo(Membro::class, 'membros_id');
+        return $this->belongsTo(Membro::class, 'membros_id')->withTrashed();
     }
 }

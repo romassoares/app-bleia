@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [PerfilController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [PerfilController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [PerfilController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}', [PerfilController::class, 'destroy'])->name('destroy');
+        Route::get('/destroy/{id}', [PerfilController::class, 'destroy'])->name('destroy');
     });
 
     Route::name('ponto.')->prefix('ponto')->group(function () {
@@ -48,7 +48,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', [PontoController::class, 'edit'])->name('edit');
         Route::get('/show/{id}', [PontoController::class, 'show'])->name('show');
         Route::put('/update/{id}', [PontoController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}', [PontoController::class, 'destroy'])->name('destroy');
+        Route::get('/destroy/{id}', [PontoController::class, 'destroy'])->name('destroy');
+        Route::get('/restore/{id}', [PontoController::class, 'restore'])->name('restore');
     });
 
     Route::name('membros.')->prefix('membro')->group(function () {
@@ -58,7 +59,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/show/{id}', [MembroController::class, 'show'])->name('show');
         Route::get('/edit/{id}', [MembroController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [MembroController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}', [MembroController::class, 'destroy'])->name('destroy');
+        Route::get('/destroy/{id}', [MembroController::class, 'destroy'])->name('destroy');
+        Route::get('/restore/{id}', [MembroController::class, 'restore'])->name('restore');
     });
 
     Route::name('ofertas.')->prefix('oferta')->group(function () {
@@ -67,7 +69,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [OfertasController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [OfertasController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [OfertasController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}', [OfertasController::class, 'destroy'])->name('destroy');
+        Route::get('/destroy/{id}', [OfertasController::class, 'destroy'])->name('destroy');
     });
 
     Route::name('cargos.')->prefix('cargo')->group(function () {
@@ -76,7 +78,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [CargoController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [CargoController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [CargoController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}', [CargoController::class, 'destroy'])->name('destroy');
+        Route::get('/destroy/{id}', [CargoController::class, 'destroy'])->name('destroy');
+        Route::get('/restore/{id}', [CargoController::class, 'restore'])->name('restore');
     });
 
     Route::name('despesas.')->prefix('despesa')->group(function () {
@@ -85,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [DespesasController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [DespesasController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [DespesasController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}', [DespesasController::class, 'destroy'])->name('destroy');
+        Route::get('/destroy/{id}', [DespesasController::class, 'destroy'])->name('destroy');
     });
 
     Route::name('dizimos.')->prefix('dizimo')->group(function () {
@@ -95,7 +98,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/show/{id}', [DizimoController::class, 'show'])->name('show');
         Route::get('/edit/{id}', [DizimoController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [DizimoController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}', [DizimoController::class, 'destroy'])->name('destroy');
+        Route::get('/destroy/{id}', [DizimoController::class, 'destroy'])->name('destroy');
     });
     Route::name('relatorio.')->prefix('relatorio')->group(function () {
         Route::get('/index', [RelatorioController::class, 'index'])->name('index');

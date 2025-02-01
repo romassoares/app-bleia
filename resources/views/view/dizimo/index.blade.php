@@ -11,7 +11,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <table class="table">
+                <table class="table table-sm">
                     <thead>
                         <th>#</th>
                         <th>valor</th>
@@ -28,22 +28,12 @@
                             <td>{{ $dizimo->Membro->nome ?? '' }}</td>
                             <td>{{$dizimo->mes_referencia}}</td>
                             <td>
-                                <div class="d-flex justify-content-center">
-                                    <div class="col">
-                                        <a href="route('dizimos.show',['id'=>$dizimo->id])">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a href="route('dizimos.edit',['id'=>$dizimo->id])">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a href="route('dizimos.destroy',['id'=>$dizimo->id])">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
+                                <div class="">
+
+                                    <a class="btn text-danger" href="{{route('dizimos.destroy',['id'=>$dizimo->id])}}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+
                                 </div>
                             </td>
                         </tr>

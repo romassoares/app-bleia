@@ -25,7 +25,6 @@ class StorePontoRequest extends FormRequest
     {
         return [
             'descricao' => 'required|min:3|max:255',
-            'cidade' => 'required|min:3|max:255',
             'bairro' => 'required|min:3|max:255',
             'rua' => 'required|min:3|max:255',
             'numero' => 'required|min:1|max:11',

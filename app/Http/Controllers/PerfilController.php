@@ -42,19 +42,22 @@ class PerfilController extends Controller
         $validated = $request->validate([
             'cnpj' => 'required|unique:perfils|max:18|min:14',
             'razao_social' => 'required|max:250|min:3',
+            'cidade' => 'required|min:3|max:255',
         ]);
 
         $validated['users_id'] = Auth::id();
-
+        $msg = '';
         if (empty($id_perfil)) {
             Perfil::create($validated);
+            $msg = 'Item inserido com sucesso';
         } else {
             $perfil = Perfil::find($id_perfil);
             if (isset($perfil)) {
                 $perfil->update($validated);
+                $msg = 'Item atualizado com sucesso';
             }
         }
 
-        return redirect()->route('perfil.index')->with('success', 'Já existe um dízimo para este mês de referência.');;
+        return redirect()->route('perfil.index')->with('success', $msg);;
     }
 }

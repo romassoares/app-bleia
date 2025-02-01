@@ -14,14 +14,20 @@ class DizimoController extends Controller
 
     public function index()
     {
-        $dizimos = Dizimo::paginate(15);
+        $dizimos = Dizimo::paginate(8);
         return view('view.dizimo.index', compact('dizimos'));
     }
 
     public function create()
     {
         $membros = Membro::all();
-        $pontos = Ponto::all();
+        if (count($membros) == 0)
+            return redirect()->route('membros.create')->with('warning', 'Cadastre um membro antes de inserir o dizimo');
+
+        $pontos = Ponto::withTrashed()->get();
+        if (count($pontos) == 0)
+            return redirect()->route('ponto.create')->with('warning', 'Cadastre um ponto antes de inserir o dizimo');
+
         return view('view.dizimo.form', compact('membros', 'pontos'));
     }
 
@@ -45,24 +51,12 @@ class DizimoController extends Controller
         }
     }
 
-    // public function show($id)
-    // {
-    //     $dizimo = Dizimo::where('id', $id)->first();
-    //     return view('view.dizimo.show', ['membro_id' => $dizimo->membro_id]);
-    // }
-
-    public function edit(Dizimo $dizimo)
+    public function destroy($id)
     {
-        //
-    }
-
-    public function update(Request $request, Dizimo $dizimo)
-    {
-        //
-    }
-
-    public function destroy(Dizimo $dizimo)
-    {
-        //
+        $exists = Dizimo::where('id', $id)->first();
+        if (!$exists)
+            return redirect()->back()->with('warning', 'Item não encontrado');
+        if ($exists->delete())
+            return redirect()->back()->with('success', 'Item removido com sucesso');
     }
 }

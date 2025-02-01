@@ -9,22 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class CargoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $cargos = Cargo::paginate(15);
+        $cargos = Cargo::withTrashed()->paginate(8);
         return view('view.cargo.index', compact('cargos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $pontos = Ponto::all();
@@ -34,67 +24,47 @@ class CargoController extends Controller
         return view('view.cargo.form', compact("pontos"));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
+        $idCargo = $request['id'];
+
         $validated = $request->validate([
             'nome' => 'required|unique:cargos|max:150|min:2'
         ]);
 
         $validated['users_id'] = Auth::id();
+        $msg = '';
+        if (empty($idCargo)) {
+            Cargo::create($validated);
+            $msg = 'Item inserido com sucesso';
+        } else {
+            $cargo = Cargo::find($idCargo);
+            if (isset($cargo)) {
+                $cargo->update($validated);
+                $msg = 'Item atualizado com sucesso';
+            }
+        }
 
-        Cargo::create($validated);
 
-        return redirect()->route('cargos.index');
+        return redirect()->route('cargos.index')->with('success', $msg);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Cargo  $cargo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cargo $cargo)
+    public function destroy($id)
     {
-        //
+        $exists = Cargo::where('id', $id)->first();
+        if (!$exists)
+            return redirect()->back()->with('warning', 'Item não encontrado');
+        if ($exists->delete()) {
+            return redirect()->back()->with('success', 'Item removido com sucesso');
+        }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Cargo  $cargo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Cargo $cargo)
+    public function restore($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cargo  $cargo
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Cargo $cargo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Cargo  $cargo
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Cargo $cargo)
-    {
-        //
+        $exists = Cargo::where('id', $id)->withTrashed()->first();
+        if (!$exists)
+            return redirect()->back()->with('warning', 'Item não encontrado');
+        if ($exists->restore()) {
+            return redirect()->back()->with('success', 'Item restaurado com sucesso');
+        }
     }
 }

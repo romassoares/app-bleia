@@ -70,20 +70,6 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <label for="cep">CEP</label>
-                                <input type="text" name="cep" id="cep" class="form-control  @error('cep') is-invalid @enderror" value="{{$membro->cep ?? old('cep')}}" maxlength="9">
-                                @error('cep')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label for="cidade">Cidade</label>
-                                <input type="text" name="cidade" id="cidade" class="form-control  @error('cidade') is-invalid @enderror" value="{{$membro->cidade ?? old('cidade')}}">
-                                @error('cidade')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
                                 <label for="bairro">Bairro</label>
                                 <input type="text" name="bairro" id="bairro" class="form-control  @error('bairro') is-invalid @enderror" value="{{$membro->bairro ?? old('bairro')}}">
                                 @error('bairro')
@@ -156,7 +142,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-3">
                             <div class="col">
                                 <a class="btn btn-secondary" href="{{route('membros.index')}}">Voltar</a>
                             </div>

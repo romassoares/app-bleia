@@ -232,11 +232,6 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'Membro',
-            'url'  => 'membro/index',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
             'text' => 'Ponto',
             'url'  => 'ponto/index',
             'icon' => 'fas fa-fw fa-user',
@@ -244,6 +239,11 @@ return [
         [
             'text' => 'Cargo',
             'url'  => 'cargo/index',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => 'Membro',
+            'url'  => 'membro/index',
             'icon' => 'fas fa-fw fa-user',
         ],
         [

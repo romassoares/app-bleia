@@ -12,80 +12,56 @@ use Illuminate\Support\Facades\Auth;
 
 class MembroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $membros = Membro::paginate(15);
+        $membros = Membro::withTrashed()->paginate(8);
         return view('view.membro.index', compact('membros'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $cargos = Cargo::all();
         if (count($cargos) == 0)
-            return redirect()->route('cargos.create');
+            return redirect()->route('cargos.create')
+                ->with('error', 'Cadastre um cargo antes de cadastrar um Membro');
+
         $pontos = Ponto::all();
         if (count($pontos) == 0)
-            return redirect()->route('ponto.index');
+            return redirect()->route('ponto.create')
+                ->with('error', 'Cadastre um ponto antes de cadastrar um Membro');
+
         return view('view.membro.form', compact('cargos', 'pontos'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(MembroRequest $request, Membro $membro)
     {
         $membro->setAll($request->validated());
         $save = $membro->save();
         if ($save)
-            return redirect()->route('membros.show', ["id" => $membro->id]);
+            return redirect()
+                ->route('membros.show', ["id" => $membro->id])
+                ->with('success', ' Item inserido com sucesso');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Membro  $membro
-     * @return \Illuminate\Http\Response
-     */
     public function show(Membro $membro, $id)
     {
-        $membro = Membro::where('id', $id)->first();
+        $membro = Membro::withTrashed()
+            ->where('id', $id)
+            ->first();
         return view('view.membro.show', compact('membro'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Membro  $membro
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        $membro = Membro::where('id', $id)->first();
+        $membro = Membro::where('id', $id)
+            ->withTrashed()
+            ->first();
         $cargos = Cargo::all();
         $pontos = Ponto::all();
         return view('view.membro.form', compact('membro', 'cargos', 'pontos'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Membro  $membro
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Membro $membro, $id)
     {
         $membro = Membro::findOrFail($id);
@@ -95,8 +71,8 @@ class MembroController extends Controller
             'cpf' => 'required|unique:membros,cpf,' . $id,
             'estado_civil' => 'in:cas,sol,viu,div',
             'naturalidade' => 'required|max:150|min:3',
-            'cep' => 'required|max:9|min:8',
-            'cidade' => 'required|max:250|min:3',
+            // 'cep' => 'required|max:9|min:8',
+            // 'cidade' => 'required|max:250|min:3',
             'bairro' => 'required|max:250|min:3',
             'rua' => 'nullable|max:250|min:3',
             'sexo' => 'in:m,f',
@@ -117,14 +93,22 @@ class MembroController extends Controller
             ->with('success', 'Membro atualizado com sucesso!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Membro  $membro
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Membro $membro)
+    public function destroy($id)
     {
-        //
+        $exists = Membro::where('id', $id)->first();
+        if (!$exists)
+            return redirect()->back()->with('warning', 'Item não encontrado');
+        if ($exists->delete())
+            return redirect()->back()->with('success', 'Item removido com sucesso');
+    }
+
+    public function restore($id)
+    {
+        $exists = Membro::where('id', $id)->withTrashed()->first();
+        if (!$exists)
+            return redirect()->back()->with('warning', 'Item não encontrado');
+        if ($exists->restore()) {
+            return redirect()->back()->with('success', 'Item restaurado com sucesso');
+        }
     }
 }

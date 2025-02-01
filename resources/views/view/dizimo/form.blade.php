@@ -32,16 +32,16 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col">
-                            <label for="ponto_id">Ponto</label>
-                            <select class="form-control" name="ponto_id" id="ponto_id">
-                                @foreach ($pontos as $ponto)
-                                <option value="{{$ponto->id}}">{{$ponto->descricao}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
+
+                        <!-- <label for="ponto_id">Ponto</label> -->
+                        <select style="display: none;" class="form-control" name="ponto_id" id="ponto_id">
+                            @foreach ($pontos as $ponto)
+                            <option value="{{$ponto->id}}">{{$ponto->descricao}}</option>
+                            @endforeach
+                        </select>
+
+
+
                         <div class="col">
                             <label for="valor">valor</label>
                             <input class="form-control" type="text" name="valor" id="valor">
@@ -79,6 +79,7 @@
         let selectedOption = input.options[input.selectedIndex];
         let pontoId = selectedOption.dataset.pontoId;
         document.querySelector('#ponto_id').value = pontoId
+        document.querySelector('#ponto_id').selected = true
     }
 </script>
 @endsection

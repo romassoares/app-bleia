@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->char('cnpj');
             $table->string('razao_social');
+            $table->string('cidade');
             $table->unsignedBigInteger('users_id');
             $table->foreign('users_id')->references('id')->on('users');
             $table->timestamps();

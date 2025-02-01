@@ -12,6 +12,7 @@ class Perfil extends Model
     protected $fillable = [
         'cnpj',
         'razao_social',
+        'cidade',
         'users_id'
     ];
 }

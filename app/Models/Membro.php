@@ -16,8 +16,8 @@ class Membro extends Model
         $this->cpf = $data['cpf'];
         $this->estado_civil = $data['estado_civil'];
         $this->naturalidade = $data['naturalidade'];
-        $this->cep = $data['cep'];
-        $this->cidade = $data['cidade'];
+        // $this->cep = $data['cep'];
+        // $this->cidade = $data['cidade'];
         $this->bairro = $data['bairro'];
         $this->rua = $data['rua'];
         $this->numero = $data['numero'];
@@ -39,16 +39,46 @@ class Membro extends Model
         ];
     }
 
+    public function getSexo()
+    {
+        return $this->sexo == 'm' ? 'Masculino' : 'Feminino';
+    }
+    public function getEstadoCivil()
+    {
+        $estado_civil = '';
+        switch ($this->estado_civil) {
+            case 'cas':
+                $estado_civil = 'Casado';
+                break;
+            case 'sol':
+                $estado_civil = 'Solteiro';
+                break;
+            case 'viu':
+                $estado_civil = 'Viúvo';
+                break;
+            case 'div':
+                $estado_civil = 'Divorciado';
+                break;
+            default:
+                $estado_civil = 'Não reconhecido';
+                break;
+        }
+        return $estado_civil;
+    }
     // public function Dizimo()
     // {
     //     return $this->belongsTo(Dizimo::class);
     // }
     public function Dizimos()
     {
-        return $this->hasMany(Dizimo::class, 'id');
+        return $this->hasMany(Dizimo::class, 'id')->withTrashed();
     }
     public function Ponto()
     {
-        return $this->hasOne(Ponto::class, 'id', 'ponto_id');
+        return $this->hasOne(Ponto::class, 'id', 'ponto_id')->withTrashed();
+    }
+    public function Cargo()
+    {
+        return $this->hasOne(Cargo::class, 'id', 'cargo_id')->withTrashed();
     }
 }

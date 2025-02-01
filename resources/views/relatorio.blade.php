@@ -20,7 +20,7 @@
                             <input class="form-control" type="date" name="data_ini" id="data_ini">
                         </div>
                         <div class="col">
-                            <label for="">Data inicial</label>
+                            <label for="">Data Final</label>
                             <input class="form-control" type="date" name="data_fim" id="data_fim">
                         </div>
                     </div>

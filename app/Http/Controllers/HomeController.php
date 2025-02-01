@@ -2,27 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dizimo;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        return view('home');
+        $tot_mes_a_mes = Dizimo::selectRaw('mes_referencia, COUNT(*) as total')
+            ->groupBy('mes_referencia')
+            ->get();
+        return view('home', compact('tot_mes_a_mes'));
     }
 }

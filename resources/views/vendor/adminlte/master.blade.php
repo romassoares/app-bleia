@@ -53,7 +53,7 @@
     <script>
         const toastrMsg = (type, msg) => {
             toastr.options = {
-                "positionClass": "toast-bottom-right",
+                "positionClass": "toast-top-right",
             };
 
             switch (type) {
@@ -67,6 +67,7 @@
                     toastr.info('Opção Inválida.');
             }
         }
+
         @if(Session::has('success'))
         @php
         $msg = Session::get('success')

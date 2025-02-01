@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id();
 
             $table->string('nome');
-            $table->char('cpf');
+            $table->char('cpf')->nullable();
             $table->enum('estado_civil', ['cas', 'sol', 'div', 'viu']);
-            $table->string('naturalidade');
-            $table->char('cep');
-            $table->string('cidade');
-            $table->string('bairro');
+            $table->string('naturalidade')->nullable();
+            // $table->char('cep');
+            // $table->string('cidade');
             $table->enum('sexo', ['m', 'f']);
+            $table->string('bairro')->nullable();
             $table->string('rua')->nullable();
             $table->integer('numero')->nullable();
 
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('nome_pai')->nullable();
 
             $table->date('data_batismo')->nullable();
-            $table->date('data_nascimento');
+            $table->date('data_nascimento')->nullable();
 
             $table->unsignedBigInteger('cargo_id');
             $table->foreign('cargo_id')->references('id')->on('cargos');

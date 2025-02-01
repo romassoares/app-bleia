@@ -8,20 +8,56 @@
 
 @section('content')
 <div class="row">
-    <div class="col-12">
+    <div class="col-3">
         <div class="card">
             <div class="card-body">
-                <table class="table">
+                <form action="{{route('cargos.store')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <input class="form-control" type="hidden" name="id" id="id">
+                        <div class="col">
+                            <label for="nome">nome</label>
+                            <input class="form-control" type="text" name="nome" id="nome">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-sm">
                     <thead>
+                        <th>#</th>
                         <th>nome</th>
-                        <th>ponto</th>
                         <th>ações</th>
                     </thead>
                     <tbody>
+                        <?php $i = 0; ?>
                         @foreach ($cargos as $cargo )
                         <tr>
+                            <td>{{$i++}}</td>
                             <td>{{$cargo->nome}}</td>
-                            <td></td>
+                            <td>
+                                <div class="col">
+                                    @if(is_null($cargo->deleted_at))
+                                    <a class="btn text-primary" onclick="editCargo({{$cargo->id}},'{{$cargo->nome}}')"><i class="fas fa-edit"></i></a>
+                                    @endif
+                                    @if(is_null($cargo->deleted_at))
+                                    <a class="btn text-danger" href="{{route('cargos.destroy',['id'=>$cargo->id])}}"><i class="fas fa-trash"></i></a>
+                                    @else
+                                    <a class="btn text-success" href="{{route('cargos.restore',['id'=>$cargo->id])}}">
+                                        <i class="fas fa-redo-alt"></i>
+                                    </a>
+                                    @endif
+                                </div>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -41,3 +77,12 @@
     </div>
 </div>
 @stop
+
+@section('js')
+<script>
+    function editCargo(id, nome) {
+        document.querySelector('#nome').value = nome
+        document.querySelector('#id').value = id
+    }
+</script>
+@endsection

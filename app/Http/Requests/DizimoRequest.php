@@ -24,7 +24,7 @@ class DizimoRequest extends FormRequest
     public function rules()
     {
         return [
-            'valor' => 'required|min:3|max:999999',
+            'valor' => 'required|min:1|max:999999',
             'mes_referencia' => 'required|date',
             'membros_id' => 'required',
             'ponto_id' => 'required',

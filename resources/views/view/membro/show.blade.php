@@ -3,7 +3,7 @@
 @section('title', 'Membro')
 
 @section('content_header')
-<h1 class="m-0 text-dark">Dashboard</h1>
+<h1 class="m-0 text-dark">Membro</h1>
 @stop
 
 @section('content')
@@ -14,79 +14,85 @@
                 <div class="row">
                     <div class="col">
                         <label for="">Nome</label>
-                        <p>
-                            {{$membro->nome}}
-                        </p>
+                        <p>{{$membro->nome}}</p>
                     </div>
                     <div class="col">
-                        <label for="">cpf</label>
-                        <p>{{$membro->cpf}}</p>
+                        <label for="">Sexo</label>
+                        <p>{{$membro->getSexo()}}</p>
                     </div>
                     <div class="col">
-                        <label for="">estado_civil</label>
-                        <p>{{$membro->estado_civil}}</p>
+                        <label for="">Estado Civil</label>
+                        <p>{{$membro->getEstadoCivil()}}</p>
                     </div>
+                    @if(!is_null($membro->bairro))
                     <div class="col">
-                        <label for="">naturalidade</label>
+                        <label for="">Naturalidade</label>
                         <p>{{$membro->naturalidade}}</p>
                     </div>
+                    @endif
+                    @if(!is_null($membro->bairro))
+                    <div class="col">
+                        <label for="">CPF</label>
+                        <p>{{$membro->cpf}}</p>
+                    </div>
+                    @endif
                 </div>
                 <div class="row">
+                    @if(!is_null($membro->bairro))
                     <div class="col">
-                        <label for="">cep</label>
-                        <p>{{$membro->cep}}</p>
-                    </div>
-                    <div class="col">
-                        <label for="">cidade</label>
-                        <p>{{$membro->cidade}}</p>
-                    </div>
-                    <div class="col">
-                        <label for="">bairro</label>
+                        <label for="">Bairro</label>
                         <p>{{$membro->bairro}}</p>
                     </div>
+                    @endif
+                    @if(!is_null($membro->rua))
                     <div class="col">
-                        <label for="">rua</label>
+                        <label for="">Rua</label>
                         <p>{{$membro->rua}}</p>
                     </div>
-                </div>
-                <div class="row">
+                    @endif
+                    @if(!is_null($membro->numero))
                     <div class="col">
-                        <label for="">sexo</label>
-                        <p>{{$membro->sexo}}</p>
-                    </div>
-                    <div class="col">
-                        <label for="">numero</label>
+                        <label for="">Número</label>
                         <p>{{$membro->numero}}</p>
                     </div>
+                    @endif
+                    <!-- </div>
+                <div class="row"> -->
+                    @if(!is_null($membro->nome_mae))
                     <div class="col">
-                        <label for="">nome_mae</label>
+                        <label for="">Nome mãe</label>
                         <p>{{$membro->nome_mae}}</p>
                     </div>
+                    @endif
+                    @if(!is_null($membro->nome_pai))
                     <div class="col">
-                        <label for="">nome_pai</label>
+                        <label for="">Nome Pai</label>
                         <p>{{$membro->nome_pai}}</p>
                     </div>
-                </div>
-                <div class="row">
+                    @endif
+                    <!-- </div>
+                <div class="row"> -->
+                    @if(!is_null($membro->data_batismo))
                     <div class="col">
-                        <label for="">data_batismo</label>
+                        <label for="">Data batismo</label>
                         <p>{{$membro->data_batismo}}</p>
                     </div>
+                    @endif
+                    @if(!is_null($membro->data_nascimento))
                     <div class="col">
-                        <label for="">data_nascimento</label>
+                        <label for="">Data Nascimento</label>
                         <p>{{$membro->data_nascimento}}</p>
                     </div>
+                    @endif
                     <div class="col">
-                        <label for="">cargo_id</label>
-                        <p>{{$membro->cargo_id}}</p>
+                        <label for="">Cargo</label>
+                        <p>{{$membro->Cargo->nome ?? ''}}</p>
                     </div>
                     <div class="col">
-                        <label for="">ponto_id</label>
-                        <p>{{$membro->ponto_id}}</p>
+                        <label for="">Ponto</label>
+                        <p>{{$membro->Ponto->descricao ?? ''}}</p>
                     </div>
-                    <!-- </div> -->
                 </div>
-
             </div>
             <div class="card-footer">
                 <div class="row">
@@ -94,7 +100,11 @@
                         <a class="btn btn-secondary" href="{{route('membros.index')}}">Voltar</a>
                     </div>
                     <div class="col">
+                        @if(is_null($membro->deleted_at))
                         <a class="btn btn-primary" href="{{route('membros.edit',['id'=>$membro->id])}}">Editar</a>
+                        @else
+                        <a class="btn btn-success" href="{{route('membros.restore',['id'=>$membro->id])}}">Restaurar</a>
+                        @endif
                     </div>
                 </div>
             </div>

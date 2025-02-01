@@ -23,7 +23,6 @@ class Ponto extends Model
     public function setAll($data)
     {
         $this->descricao = $data['descricao'];
-        $this->cidade = $data['cidade'];
         $this->bairro = $data['bairro'];
         $this->rua = $data['rua'];
         $this->numero = $data['numero'];
@@ -33,6 +32,6 @@ class Ponto extends Model
 
     public function Membro()
     {
-        return $this->hasMany(Membro::class, 'ponto_id');
+        return $this->hasMany(Membro::class, 'ponto_id')->withTrashed();
     }
 }
