@@ -3,6 +3,7 @@
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\DespesasController;
 use App\Http\Controllers\DizimoController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MembroController;
 use App\Http\Controllers\OfertasController;
 use App\Http\Controllers\PerfilController;
@@ -29,9 +30,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::name('perfil.')->prefix('perfil')->group(function () {
         Route::get('/index', [PerfilController::class, 'index'])->name('index');
         Route::get('/create', [PerfilController::class, 'create'])->name('create');

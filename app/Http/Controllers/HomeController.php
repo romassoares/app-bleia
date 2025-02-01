@@ -15,9 +15,13 @@ class HomeController extends Controller
 
     public function index()
     {
-        $tot_mes_a_mes = Dizimo::selectRaw('mes_referencia, COUNT(*) as total')
+        $tot_mes_a_mes = Dizimo::selectRaw("DATE_FORMAT(mes_referencia, '%M') AS mes_referencia, SUM(valor) as total_soma")
             ->groupBy('mes_referencia')
+            ->orderBy("mes_referencia", 'desc')
             ->get();
-        return view('home', compact('tot_mes_a_mes'));
+        $labels = $tot_mes_a_mes->pluck('mes_referencia');
+        $data = $tot_mes_a_mes->pluck('total_soma');
+
+        return view('home', compact('labels', 'data'));
     }
 }
